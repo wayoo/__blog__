@@ -80,7 +80,7 @@ var video = document.getElementById(&apos;video&apos;);
 
 // Get access to the camera!
 if(navigator.mediaDevices &amp;&amp; navigator.mediaDevices.getUserMe">
-<meta property="og:updated_time" content="2016-12-14T16:37:25.000Z">
+<meta property="og:updated_time" content="2016-12-14T16:40:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="labs">
 <meta name="twitter:description" content="Snap Photothumbnail
@@ -271,7 +271,23 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         video.src = window.URL.createObjectURL(stream);
         video.play();
     });
-}else{
+
+}else if(navigator.getUserMedia) { // Standard
+     navigator.getUserMedia({ video: true }, function(stream) {
+         video.src = stream;
+         video.play();
+     }, errBack);
+ } else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+     navigator.webkitGetUserMedia({ video: true }, function(stream){
+         video.src = window.webkitURL.createObjectURL(stream);
+         video.play();
+     }, errBack);
+ } else if(navigator.mozGetUserMedia) { // Mozilla-prefixed
+     navigator.mozGetUserMedia({ video: true }, function(stream){
+         video.src = window.URL.createObjectURL(stream);
+         video.play();
+     }, errBack);
+ }else{
     alert("doesn't support!");
 }
 
